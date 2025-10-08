@@ -1,0 +1,80 @@
+1. Padrão Singleton
+
+💡 Ideia
+Usei o Singleton para garantir que o sistema de configurações tenha
+apenas uma instância global durante a execução da aplicação. Assim,
+qualquer parte do programa acessa as mesmas configurações, evitando
+duplicação ou conflito de dados.
+
+⚙️ Implementação
+A classe ConfigurationManager lê um arquivo (simulado com um dicionário)
+e guarda os valores de host, port, user, password. Se outra parte do 
+código tentar criar um novo objeto dessa classe, ela receberá a mesma instância.
+
+✅ Prós
+ - Simples e direto.
+ - Garante consistência das configurações.
+ - Evita desperdício de memória e reprocessamento.
+
+❌ Contras
+ - Dificulta testes (mockar instâncias Singleton é chato).
+ - Pode gerar dependência global (difícil isolar).
+ - Pode ser problemático em ambientes multithread se não for bem controlado.
+
+========================================================================
+
+2. Padrão Builder
+
+💡 Ideia
+No Builder, a ideia é construir o objeto de configuração passo 
+a passo, com métodos que permitem definir valores específicos, 
+e só no final “montar” o objeto completo.
+Isso é útil quando há muitos parâmetros opcionais ou diferentes 
+formas de construir uma configuração.
+
+⚙️ Implementação
+Criei a classe ConfigurationBuilder que define métodos como set_host(), set_port() etc.
+No final, o método build() retorna uma instância de Configuration.
+
+✅ Prós
+ - Código limpo e legível.
+ - Facilita personalização das configurações.
+ - Fácil de testar e estender.
+
+❌ Contras
+ - Mais código e mais classes.
+ - Pode parecer “overkill” para configurações simples.
+
+========================================================================
+
+3. Padrão Abstract Factory
+
+💡 Ideia
+O Abstract Factory é usado quando há diferentes tipos de
+ambientes (ex: desenvolvimento, produção, testes), e cada 
+ambiente precisa de uma “fábrica” que saiba criar suas 
+próprias configurações.
+Cada fábrica gera uma versão específica da configuração.
+
+⚙️ Implementação
+Criei uma ConfigurationFactory abstrata, e classes concretas
+como DevConfigFactory, ProdConfigFactory.
+Cada uma cria o conjunto de configurações apropriado ao ambiente.
+
+✅ Prós
+ - Facilita a troca de ambiente (basta mudar a fábrica).
+ - Segue o princípio da inversão de dependência.
+ - Facilita manutenção em grandes sistemas.
+
+❌ Contras
+ - Código mais verboso.
+ - Exige mais planejamento.
+ - Pouco útil se só houver um tipo de ambiente.
+
+========================================================================
+
+🧩 Outros padrões que poderiam ser usados
+ - Prototype — para clonar configurações e gerar novas variações rapidamente.
+ - Decorator — para adicionar camadas extras (ex: criptografia de senhas, logs).
+ - Observer — para notificar partes do sistema quando as configurações mudarem.
+ - Factory Method — se quisermos apenas escolher o tipo de configuração em runtime sem precisar de várias fábricas.
